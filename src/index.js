@@ -6,6 +6,7 @@ const helmet = require("helmet");
 const UserAuthRouter = require("./routes/userAuthRoute")
 const BookRouter = require("./routes/bookRoute")
 const LoanRouter = require("./routes/loanRoutes")
+const ReservationRouter = require("./routes/reservationRoute")
 
 const app = express();
 
@@ -34,6 +35,9 @@ app.use('/book',BookRouter);
 
 //Loan Routes
 app.use('/loan', LoanRouter)
+
+//Reservation Routes
+app.use("/reservation", ReservationRouter)
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
