@@ -50,15 +50,17 @@ const getAllLoans = async (req, res) => {
     limit = parseInt(limit);
     const skip = (page - 1) * limit;
 
-    const [loans, totalLoansCount] = await prisma.$transaction([
-        prisma.loan.findMany({
-          skip,
-          take: limit,
-          include: { book: true, user: true },
-          orderBy: { borrowedAt: "desc" }, // Sorting newest first
-        }),
-        prisma.loan.count(), // Total count for pagination metadata
-      ]);
+    const [loans, totalLoansCount] = await prisma.$transaction(async(tx)=>{
+        const loans = await tx.loan.findMany({
+            skip,
+            take: limit,
+            include: { book: true, user: true },
+            orderBy: { borrowedAt: "desc" }, // Sorting newest first
+          });
+
+          const totalLoansCount = await tx.loan.count(); // Total count for pagination metadata
+        return [loans, totalLoansCount];
+    });
 
       return res.status(200).json({
         totalLoansCount,
