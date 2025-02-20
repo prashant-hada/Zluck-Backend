@@ -93,7 +93,17 @@ const returnBook = async (req, res) => {
       data: { returnedAt: now, fine },
     });
 
-    await prisma.book.update({ where: { id: loan.bookId }, data: { available: true } });
+    const nextReservation = await prisma.reservation.findFirst({
+        where: { bookId: loan.bookId, status: "PENDING" },
+        orderBy: { reservedAt: "asc" },
+      });
+    
+    if(!nextReservation){
+        await prisma.book.update({ where: { id: loan.bookId }, data: { available: true } });
+    }
+    else if (nextReservation) {
+        //Email Trigger Logic
+    }
 
     return res.json({ message: "Book returned successfully", fine });
   } catch (error) {
