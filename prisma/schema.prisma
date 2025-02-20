@@ -21,8 +21,15 @@ enum UserRole {
   MEMBER
 }
 
+enum ReservationStatus {
+  PENDING    // Waiting for book to be available
+  COMPLETED  // Book is collected
+  CANCELED   // User canceled the reservation
+  EXPIRED    // Auto-canceled due to timeout
+}
+
 model User {
-id String @id @default(uuid())
+  id String @id @default(uuid())
   name        String
   email       String       @unique
   password    String
@@ -61,6 +68,7 @@ model Reservation {
   userId     String
   bookId     String
   reservedAt DateTime      @default(now())
+  status     ReservationStatus @default(PENDING)
 
   user       User         @relation(fields: [userId], references: [id])
   book       Book         @relation(fields: [bookId], references: [id])
