@@ -12,3 +12,57 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+
+// Enum for user roles
+enum UserRole {
+  ADMIN
+  LIBRARIAN
+  MEMBER
+}
+
+model User {
+  id          Int          @id @default(autoincrement())
+  name        String
+  email       String       @unique
+  password    String
+  role        UserRole     @default(MEMBER) 
+  loans       Loan[]
+  reservations Reservation[]
+}
+
+model Book {
+  id          Int          @id @default(autoincrement())
+  title       String
+  author      String
+  genre       String
+  isbn        String       @unique
+  available   Boolean      @default(true)
+  reservations Reservation[]
+
+  Loan Loan[]
+}
+
+model Loan {
+  id         Int          @id @default(autoincrement())
+  userId     Int
+  bookId     Int
+  borrowedAt DateTime      @default(now())
+  dueDate    DateTime
+  durationDays Int         // Duration for which the book is borrowed
+  returnedAt DateTime?
+  fine       Float         @default(0)
+  
+  user       User         @relation(fields: [userId], references: [id])
+  book       Book         @relation(fields: [bookId], references: [id])
+}
+
+model Reservation {
+  id         Int          @id @default(autoincrement())
+  userId     Int
+  bookId     Int
+  reservedAt DateTime      @default(now())
+
+  user       User         @relation(fields: [userId], references: [id])
+  book       Book         @relation(fields: [bookId], references: [id])
+}
