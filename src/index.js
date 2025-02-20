@@ -7,6 +7,7 @@ const UserAuthRouter = require("./routes/userAuthRoute")
 const BookRouter = require("./routes/bookRoute")
 const LoanRouter = require("./routes/loanRoutes")
 const ReservationRouter = require("./routes/reservationRoute")
+const AdminRouter = require("./routes/adminRoute")
 
 const app = express();
 
@@ -38,6 +39,9 @@ app.use('/loan', LoanRouter)
 
 //Reservation Routes
 app.use("/reservation", ReservationRouter)
+
+//Admin Routes
+app.use("/admin", AdminRouter)
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
