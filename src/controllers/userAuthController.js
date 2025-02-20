@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const prisma = require("../config/prismaClient");
+const prisma = require("../db-config/prismaClient.js");
 const generateToken = require("../utils/generateToken");
 
 // Register User
@@ -61,7 +61,8 @@ const login = async (req, res) => {
     // Generate token
     const token = generateToken(user.id);
 
-    return res.json({
+    return res.status(200)
+    .json({
       message: "Login successful",
       user: { id: user.id, name: user.name, email: user.email, role: user.role },
       token,

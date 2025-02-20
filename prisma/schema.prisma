@@ -22,7 +22,7 @@ enum UserRole {
 }
 
 model User {
-  id          Int          @id @default(autoincrement())
+id String @id @default(uuid())
   name        String
   email       String       @unique
   password    String
@@ -32,7 +32,7 @@ model User {
 }
 
 model Book {
-  id          Int          @id @default(autoincrement())
+  id          String @id @default(uuid())
   title       String
   author      String
   genre       String
@@ -44,9 +44,9 @@ model Book {
 }
 
 model Loan {
-  id         Int          @id @default(autoincrement())
-  userId     Int
-  bookId     Int
+  id         String @id @default(uuid())
+  userId     String
+  bookId     String
   borrowedAt DateTime      @default(now())
   dueDate    DateTime
   durationDays Int         // Duration for which the book is borrowed
@@ -58,9 +58,9 @@ model Loan {
 }
 
 model Reservation {
-  id         Int          @id @default(autoincrement())
-  userId     Int
-  bookId     Int
+  id         String @id @default(uuid())
+  userId     String
+  bookId     String
   reservedAt DateTime      @default(now())
 
   user       User         @relation(fields: [userId], references: [id])
