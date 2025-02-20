@@ -4,6 +4,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const UserAuthRouter = require("./routes/userAuthRoute")
+const BookRoutes = require("./routes/bookRoute")
 
 const app = express();
 
@@ -26,6 +27,9 @@ app.get('/', async(req , res )=>{
 
 //user routes
 app.use("/user", UserAuthRouter);
+
+//Book Routes
+app.use('/book',BookRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

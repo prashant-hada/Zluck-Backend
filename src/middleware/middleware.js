@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const prisma = require("../config/prismaClient");
 
-const useProtect = async (req, res, next) => {
+const userProtect = async (req, res, next) => {
   let token;
 
   if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
@@ -27,4 +27,12 @@ const useProtect = async (req, res, next) => {
   }
 };
 
-module.exports = useProtect;
+const isAdmin = (req, res, next) => {
+  if (req.user && req.user.role === "ADMIN") {
+    next();
+  } else {
+    res.status(403).json({ error: "Access denied. Admins only." });
+  }
+};
+
+module.exports = {userProtect, isAdmin};
