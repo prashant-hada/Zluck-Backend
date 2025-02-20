@@ -49,7 +49,6 @@ model Loan {
   bookId     String
   borrowedAt DateTime      @default(now())
   dueDate    DateTime
-  durationDays Int         // Duration for which the book is borrowed
   returnedAt DateTime?
   fine       Float         @default(0)
   

@@ -32,7 +32,16 @@ const getBook = async (req, res) => {
 
 const getAllBooks = async (req, res) => {
   try {
-    const books = await prisma.book.findMany();
+    let { page = 1, limit = 10 } = req.query;
+    page = parseInt(page);
+    limit = parseInt(limit);
+    const skip = (page - 1) * limit;
+    
+    const [books, totalBookCount] = await prisma.$transaction([
+        prisma.book.findMany(),
+        prisma.book.count(), 
+      ]);
+
     return res.status(200).json(books);
   } catch (error) {
     return res.status(500).json({ error: "Server error" });
