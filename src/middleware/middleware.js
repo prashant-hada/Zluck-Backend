@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const prisma = require("../config/prismaClient");
+const prisma = require("../db-config/prismaClient");
 
 const userProtect = async (req, res, next) => {
   let token;

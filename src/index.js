@@ -4,7 +4,8 @@ const cors = require("cors");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const UserAuthRouter = require("./routes/userAuthRoute")
-const BookRoutes = require("./routes/bookRoute")
+const BookRouter = require("./routes/bookRoute")
+const LoanRouter = require("./routes/loanRoutes")
 
 const app = express();
 
@@ -29,7 +30,10 @@ app.get('/', async(req , res )=>{
 app.use("/user", UserAuthRouter);
 
 //Book Routes
-app.use('/book',BookRoutes);
+app.use('/book',BookRouter);
+
+//Loan Routes
+app.use('/loan', LoanRouter)
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
