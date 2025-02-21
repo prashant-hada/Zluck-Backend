@@ -30,6 +30,14 @@ const register = async (req, res) => {
     // Generating token for user
     const token = generateToken(user.id);
 
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, 
+    });
+
+
     return res.status(201).json({
       message: "User registered successfully",
       user: { id: user.id, name: user.name, email: user.email, role: user.role },
@@ -61,6 +69,14 @@ const login = async (req, res) => {
     // Generate token
     const token = generateToken(user.id);
 
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, 
+    });
+
+
     return res.status(200)
     .json({
       message: "Login successful",
@@ -73,4 +89,20 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const logout = async (req, res) => {
+  try {
+    res.cookie("jwt", "", {
+      httpOnly: true,
+      expires: new Date(0), // Expire the cookie immediately
+      sameSite: "Strict",
+      secure: process.env.NODE_ENV === "production",
+    });
+
+    return res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Server error" });
+  }
+};
+
+module.exports = { register, login, logout };
