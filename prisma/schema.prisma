@@ -33,7 +33,8 @@ model User {
   name        String
   email       String       @unique
   password    String
-  role        UserRole     @default(MEMBER) 
+  role        UserRole     @default(MEMBER)
+  blocked     Boolean      @default(false) 
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @default(now())
   loans       Loan[]
@@ -48,6 +49,8 @@ model Book {
   isbn        String       @unique
   available   Boolean      @default(true)
   reservations Reservation[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now())
 
   Loan Loan[]
 }

@@ -17,7 +17,13 @@ app.use(helmet());
 // Logging Middleware
 app.use(morgan("dev"));
 
-app.use(cors());
+// app.use(cors());
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    credentials: true, 
+  })
+);
 
 // Parse JSON and URL-encoded data
 app.use(express.json());
